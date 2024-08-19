@@ -1,5 +1,6 @@
 const { GraphQLError } = require('graphql');
-const { hashPassword } = require('../helpers/bcrypt');
+const { hashPassword, comparePassword } = require('../helpers/bcrypt');
+const { signToken } = require('../helpers/jwt');
 
 const resolvers = {
     Query: {
@@ -21,7 +22,7 @@ const resolvers = {
                 if (findUser) {
                     throw new GraphQLError('Username already exist', {
                         extensions: {
-                            code: 'BAD_REQUEST',
+                            code: 'BAD_USER_INPUT',
                         }
                     });
                 }
@@ -32,7 +33,7 @@ const resolvers = {
                 if (!regex.test(newUser.email)) {
                     throw new GraphQLError('Invalid email format', {
                         extensions: {
-                            code: 'BAD_REQUEST',
+                            code: 'BAD_USER_INPUT',
                         }
                     });
                 }
@@ -40,7 +41,7 @@ const resolvers = {
                 if (findUser) {
                     throw new GraphQLError('Email already exist', {
                         extensions: {
-                            code: 'BAD_REQUEST',
+                            code: 'BAD_USER_INPUT',
                         }
                     });
                 }
@@ -51,7 +52,7 @@ const resolvers = {
                 if (newUser.password.length < 5) {
                     throw new GraphQLError('Password must be at least 5 characters', {
                         extensions: {
-                            code: 'BAD_REQUEST',
+                            code: 'BAD_USER_INPUT',
                         }
                     });
                 }
@@ -60,8 +61,48 @@ const resolvers = {
             await users.insertOne(newUser);
             return newUser;
         },
-        Login: (_, args) => {
-            return args;
+        Login: async (_, args, contextValue) => {
+            const { db } = contextValue;
+            const { username, password } = args;
+
+            if (!username) {
+                throw new GraphQLError('Username required!', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                });
+            }
+
+            if (!password) {
+                throw new GraphQLError('Password required!', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                });
+            }
+
+            const users = await db.collection('Users');
+            const findUser = await users.findOne({ username });
+            
+            if (!findUser) {
+                throw new GraphQLError('Invalid email/password', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                });
+            }
+
+            if (!comparePassword(password, findUser.password)) {
+                throw new GraphQLError('Invalid email/password', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                });
+            }
+
+            const access_token = signToken({id: findUser._id})
+
+            return { access_token };
         }
     }
 }

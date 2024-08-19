@@ -15,6 +15,10 @@ const typeDefs = `#graphql
         password: String!
     }
 
+    type AccessToken {
+        access_token: String
+    }
+
     type Query {
         SearchUsers(name: String, username: String): [User]
         GetUser(id: ID): User
@@ -22,7 +26,7 @@ const typeDefs = `#graphql
 
     type Mutation {
         AddUser(newUser: NewUser): User
-        Login(username: String, password: String): User
+        Login(username: String, password: String): AccessToken
     }
 `
 
