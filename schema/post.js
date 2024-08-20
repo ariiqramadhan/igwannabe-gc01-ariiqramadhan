@@ -35,12 +35,6 @@ const typeDefs = `#graphql
         updatedAt: String
     }
 
-    input NewLike {
-        username: String!
-        createdAt: String
-        updatedAt: String
-    }
-
     type Query {
         GetPosts: [Post]
         GetPost(id: ID): Post
@@ -49,7 +43,7 @@ const typeDefs = `#graphql
     type Mutation {
         AddPost(newPost: NewPost): Post
         CommentPost(newComment: NewComment, postId: ID): Comment
-        LikePost(newLike: NewLike): Like
+        LikePost(postId: ID): Like
     }
 `
 

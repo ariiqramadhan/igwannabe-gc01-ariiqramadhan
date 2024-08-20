@@ -41,11 +41,28 @@ const resolvers = {
                 $push: { comments: newComment }
             }); 
 
-            console.log(newComment);
             return newComment;
         },
-        LikePost: (_, args) => {
-            return args;
+        LikePost: async (_, args, contextValue) => {
+            const { authentication, db } = contextValue;
+            const { postId } = args;
+            const { username } = await authentication();
+
+            const newLike = {
+                username,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }
+
+            const posts = db.collection('Posts');
+            await posts.updateOne({
+                _id: new ObjectId(postId)
+            },
+            {
+                $push: { likes: newLike }
+            }); 
+
+            return newLike;
         }
     }
 }
