@@ -1,14 +1,39 @@
 const { GraphQLError } = require('graphql');
 const { hashPassword, comparePassword } = require('../helpers/bcrypt');
 const { signToken } = require('../helpers/jwt');
+const { ObjectId } = require('mongodb');
 
 const resolvers = {
     Query: {
-        SearchUsers: (_, args) => {
-            return args;
+        SearchUsers: async (_, args, contextValue) => {
+            const { username } = args;
+            const { authentication, db } = contextValue;
+
+            const user = authentication();
+            const users = await db.collection('Users');
+
+            const regex = new RegExp(`${username}`);
+            const data = await users.find({ username: regex }).toArray();
+            return data;
         },
-        GetUser: (_, args) => {
-            return args;
+        GetUser: async (_, args, contextValue) => {
+            //! di lookup ?
+            const { authentication, db } = contextValue;
+            const { id } = args;
+            const user = await authentication();
+
+            const users = await db.collection('Users');
+            const findUser = await users.findOne(new ObjectId(id));
+
+            if (!findUser) {
+                throw new GraphQLError('User not found', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                });
+            }
+
+            return findUser;
         }
     },
     Mutation: {
@@ -58,7 +83,14 @@ const resolvers = {
                 }
                 newUser.password = hashPassword(newUser.password);
             }
-            await users.insertOne(newUser);
+            const data = await users.insertOne(newUser);
+            // return {
+            //     _id: data.insertedId,
+            //     name: newUser.name,
+            //     username: newUser.username,
+            //     email: newUser.email,
+            //     password: newUser.password
+            // };
             return newUser;
         },
         Login: async (_, args, contextValue) => {
