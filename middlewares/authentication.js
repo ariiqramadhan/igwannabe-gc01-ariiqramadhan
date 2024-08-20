@@ -1,5 +1,7 @@
 const { GraphQLError } = require("graphql");
 const { verifyToken } = require("../helpers/jwt");
+const { getDB } = require("../config/mongoconnection");
+const { ObjectId } = require("mongodb");
 
 const authentication = async (req) => {
     const access_token = req.headers.authorization;
@@ -20,7 +22,21 @@ const authentication = async (req) => {
     }
 
     const payload = verifyToken(token);
-    return payload;
+    const db = await getDB();
+    const users = db.collection('Users');
+    const findUser = await users.findOne({_id: new ObjectId(payload.id)});
+    if (!findUser) {
+        throw new GraphQLError('Invalid Token', {
+            extensions: {
+              code: 'UNAUTHENTICATED',
+            },
+        });
+    }
+    
+    return {
+        id: payload.id,
+        username: findUser.username
+    };
 }
 
 module.exports = authentication;

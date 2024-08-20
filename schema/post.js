@@ -9,18 +9,13 @@ const typeDefs = `#graphql
         comments: [Comment]
         likes: [Like]
         createdAt: String
-        updateAt: String
+        updatedAt: String
     }
 
     input NewPost {
         content: String!
         tags: [String]
         imageUrl: String
-        authorId: ID!
-        comments: NewComment
-        likes: NewLike
-        createdAt: String
-        updateAt: String
     }
 
     type Comment {
