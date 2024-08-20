@@ -10,6 +10,11 @@ const typeDefs = `#graphql
         likes: [Like]
         createdAt: String
         updatedAt: String
+        author: Author
+    }
+
+    type Author {
+        username: String
     }
 
     input NewPost {

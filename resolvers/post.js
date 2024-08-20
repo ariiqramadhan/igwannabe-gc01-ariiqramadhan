@@ -2,11 +2,82 @@ const { ObjectId } = require("mongodb");
 
 const resolvers = {
     Query: {
-        GetPosts: () => {
-            return;
+        GetPosts: async (_, args, contextValue) => {
+            const { authentication, db } = contextValue;
+            const user = await authentication();
+
+            const posts = db.collection('Posts');
+            const agg = [
+                {
+                  '$lookup': {
+                    'from': 'Users', 
+                    'localField': 'authorId', 
+                    'foreignField': '_id', 
+                    'as': 'author'
+                  }
+                }, {
+                  '$project': {
+                    'author': {
+                      'name': 0, 
+                      'email': 0, 
+                      '_id': 0, 
+                      'password': 0
+                    }
+                  }
+                }, {
+                  '$unwind': {
+                    'path': '$author', 
+                    'preserveNullAndEmptyArrays': true
+                  }
+                }
+            ];
+
+            const cursor = posts.aggregate(agg);
+            const data = await cursor.toArray();
+            return data;
         },
-        GetPost: (_, args) => {
-            return args;
+        GetPost: async (_, args, contextValue) => {
+            const { authentication, db } = contextValue;
+            const { id } = args;
+            const user = await authentication();
+
+            const posts = db.collection('Posts');
+            const agg = [
+                {
+                  '$match': {
+                    '_id': new ObjectId(id)
+                  }
+                }, 
+                {
+                  '$lookup': {
+                    'from': 'Users', 
+                    'localField': 'authorId', 
+                    'foreignField': '_id', 
+                    'as': 'author'
+                  }
+                }, 
+                {
+                  '$project': {
+                    'author': {
+                      'name': 0, 
+                      'email': 0, 
+                      '_id': 0, 
+                      'password': 0
+                    }
+                  }
+                }, 
+                {
+                  '$unwind': {
+                    'path': '$author', 
+                    'preserveNullAndEmptyArrays': true
+                  }
+                }
+              ];
+
+            const cursor = posts.aggregate(agg);
+            const findPost = await cursor.toArray();
+
+            return findPost[0];
         }
     },
     Mutation: {
