@@ -1,8 +1,13 @@
 const { ObjectId } = require("mongodb");
+const redis = require("../config/redisconnection");
 
 const resolvers = {
     Query: {
         GetPosts: async (_, args, contextValue) => {
+            const cache = await redis.get('post:all');
+            if (cache) {
+                return JSON.parse(cache);
+            }
             const { authentication, db } = contextValue;
             const user = await authentication();
 
@@ -34,6 +39,7 @@ const resolvers = {
 
             const cursor = posts.aggregate(agg);
             const data = await cursor.toArray();
+            redis.set('post:all', JSON.stringify(data));
             return data;
         },
         GetPost: async (_, args, contextValue) => {
@@ -94,6 +100,7 @@ const resolvers = {
             const posts = db.collection('Posts');
             await posts.insertOne(newPost);
 
+            redis.del('post:all');
             return newPost;
         },
         CommentPost: async (_, args, contextValue) => {
