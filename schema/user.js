@@ -5,7 +5,6 @@ const typeDefs = `#graphql
         name: String
         username: String!
         email: String!
-        password: String!
     }
 
     input NewUser {
@@ -16,11 +15,11 @@ const typeDefs = `#graphql
     }
 
     type AccessToken {
-        access_token: String
+        access_token: String!
     }
 
     type Query {
-        SearchUsers(name: String, username: String): [User]
+        SearchUsers(username: String): [User]
         GetUser(id: ID): User
     }
 
