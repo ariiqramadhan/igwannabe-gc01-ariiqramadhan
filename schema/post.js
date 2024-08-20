@@ -27,9 +27,6 @@ const typeDefs = `#graphql
 
     input NewComment {
         content: String!
-        username: String!
-        createdAt: String
-        updatedAt: String
     }
 
     type Like {
@@ -51,7 +48,7 @@ const typeDefs = `#graphql
 
     type Mutation {
         AddPost(newPost: NewPost): Post
-        CommentPost(newComment: NewComment): Comment
+        CommentPost(newComment: NewComment, postId: ID): Comment
         LikePost(newLike: NewLike): Like
     }
 `

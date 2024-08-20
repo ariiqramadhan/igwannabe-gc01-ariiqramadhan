@@ -25,8 +25,24 @@ const resolvers = {
 
             return newPost;
         },
-        CommentPost: (_, args) => {
-            return args;
+        CommentPost: async (_, args, contextValue) => {
+            const { authentication, db } = contextValue;
+            const { newComment, postId } = args;
+            const { username } = await authentication();
+
+            newComment.username = username;
+            newComment.updatedAt = newComment.createdAt = new Date();
+
+            const posts = db.collection('Posts');
+            await posts.updateOne({
+                _id: new ObjectId(postId)
+            },
+            {
+                $push: { comments: newComment }
+            }); 
+
+            console.log(newComment);
+            return newComment;
         },
         LikePost: (_, args) => {
             return args;
