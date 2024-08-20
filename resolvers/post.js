@@ -14,6 +14,11 @@ const resolvers = {
             const posts = db.collection('Posts');
             const agg = [
                 {
+                  '$sort': {
+                    'createdAt': -1
+                  }
+                }, 
+                {
                   '$lookup': {
                     'from': 'Users', 
                     'localField': 'authorId', 
