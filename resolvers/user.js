@@ -32,7 +32,31 @@ const resolvers = {
                     'from': 'Follows', 
                     'localField': '_id', 
                     'foreignField': 'followerId', 
-                    'as': 'following'
+                    'as': 'following',
+                    'pipeline': [
+                        {
+                          '$lookup': {
+                            'from': 'Users', 
+                            'localField': 'followingId', 
+                            'foreignField': '_id', 
+                            'as': 'user'
+                          }
+                        }, {
+                          '$unwind': {
+                            'path': '$user', 
+                            'preserveNullAndEmptyArrays': true
+                          }
+                        }, {
+                          '$project': {
+                            'user': {
+                              '_id': 0, 
+                              'name': 0, 
+                              'email': 0, 
+                              'password': 0
+                            }
+                          }
+                        }
+                    ]
                   }
                 }, 
                 {
@@ -40,7 +64,31 @@ const resolvers = {
                     'from': 'Follows', 
                     'localField': '_id', 
                     'foreignField': 'followingId', 
-                    'as': 'followers'
+                    'as': 'followers',
+                    'pipeline': [
+                        {
+                          '$lookup': {
+                            'from': 'Users', 
+                            'localField': 'followerId', 
+                            'foreignField': '_id', 
+                            'as': 'user'
+                          }
+                        }, {
+                          '$unwind': {
+                            'path': '$user', 
+                            'preserveNullAndEmptyArrays': true
+                          }
+                        }, {
+                          '$project': {
+                            'user': {
+                              '_id': 0, 
+                              'name': 0, 
+                              'email': 0, 
+                              'password': 0
+                            }
+                          }
+                        }
+                    ]
                   }
                 }
             ];

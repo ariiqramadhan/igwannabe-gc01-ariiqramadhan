@@ -5,14 +5,12 @@ const typeDefs = `#graphql
         followingId: ID
         followerId: ID
         createdAt: String
-        updatedAt: String
+        updatedAt: String,
+        user: Author
     }
     
     input NewFollow {
         followingId: ID
-        followerId: ID
-        createdAt: String
-        updatedAt: String
     }
 
     type Mutation {

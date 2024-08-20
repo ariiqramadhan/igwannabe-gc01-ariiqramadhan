@@ -29,7 +29,7 @@ const server = new ApolloServer({
             context: ({ req, res }) => {
                 return {
                     db,
-                    authentication: () => authentication(req)
+                    authentication: async () => await authentication(req)
                 }
             }
         });
