@@ -17,13 +17,37 @@ const resolvers = {
             return data;
         },
         GetUser: async (_, args, contextValue) => {
-            //! di lookup ?
             const { authentication, db } = contextValue;
             const { id } = args;
             const user = await authentication();
 
+            const agg = [
+                {
+                  '$match': {
+                    '_id': new ObjectId(id)
+                  }
+                }, 
+                {
+                  '$lookup': {
+                    'from': 'Follows', 
+                    'localField': '_id', 
+                    'foreignField': 'followerId', 
+                    'as': 'following'
+                  }
+                }, 
+                {
+                  '$lookup': {
+                    'from': 'Follows', 
+                    'localField': '_id', 
+                    'foreignField': 'followingId', 
+                    'as': 'followers'
+                  }
+                }
+            ];
+
             const users = await db.collection('Users');
-            const findUser = await users.findOne(new ObjectId(id));
+            const cursor = users.aggregate(agg);
+            const findUser = await cursor.toArray();
 
             if (!findUser) {
                 throw new GraphQLError('User not found', {
@@ -33,7 +57,7 @@ const resolvers = {
                 });
             }
 
-            return findUser;
+            return findUser[0];
         }
     },
     Mutation: {
