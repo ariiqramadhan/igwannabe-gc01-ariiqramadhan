@@ -5,8 +5,8 @@ const typeDefs = `#graphql
         name: String
         username: String!
         email: String!
-        following: [Follow]
-        followers: [Follow]
+        following: [User]
+        followers: [User]
     }
 
     input NewUser {

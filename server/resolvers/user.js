@@ -30,64 +30,45 @@ const resolvers = {
                   '$lookup': {
                     'from': 'Follows', 
                     'localField': '_id', 
-                    'foreignField': 'followerId', 
-                    'as': 'following',
-                    'pipeline': [
-                        {
-                          '$lookup': {
-                            'from': 'Users', 
-                            'localField': 'followingId', 
-                            'foreignField': '_id', 
-                            'as': 'user'
-                          }
-                        }, {
-                          '$unwind': {
-                            'path': '$user', 
-                            'preserveNullAndEmptyArrays': true
-                          }
-                        }, {
-                          '$project': {
-                            'user': {
-                              '_id': 0, 
-                              'name': 0, 
-                              'email': 0, 
-                              'password': 0
-                            }
-                          }
-                        }
-                    ]
+                    'foreignField': 'followingId', 
+                    'as': 'followers'
+                  }
+                }, 
+                {
+                  '$lookup': {
+                    'from': 'Users', 
+                    'localField': 'followers.followerId', 
+                    'foreignField': '_id', 
+                    'as': 'followers'
                   }
                 }, 
                 {
                   '$lookup': {
                     'from': 'Follows', 
                     'localField': '_id', 
-                    'foreignField': 'followingId', 
-                    'as': 'followers',
-                    'pipeline': [
-                        {
-                          '$lookup': {
-                            'from': 'Users', 
-                            'localField': 'followerId', 
-                            'foreignField': '_id', 
-                            'as': 'user'
-                          }
-                        }, {
-                          '$unwind': {
-                            'path': '$user', 
-                            'preserveNullAndEmptyArrays': true
-                          }
-                        }, {
-                          '$project': {
-                            'user': {
-                              '_id': 0, 
-                              'name': 0, 
-                              'email': 0, 
-                              'password': 0
-                            }
-                          }
-                        }
-                    ]
+                    'foreignField': 'followerId', 
+                    'as': 'following'
+                  }
+                }, 
+                {
+                  '$lookup': {
+                    'from': 'Users', 
+                    'localField': 'following.followingId', 
+                    'foreignField': '_id', 
+                    'as': 'following'
+                  }
+                }, 
+                {
+                  '$project': {
+                    'password': 0, 
+                    'followers': {
+                      'email': 0, 
+                      'password': 0
+                    }, 
+                    'following': {
+                      'email': 0, 
+                      'password': 0
+                    }
                   }
                 }
             ];
