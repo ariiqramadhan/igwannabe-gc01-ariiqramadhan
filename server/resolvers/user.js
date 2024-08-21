@@ -12,8 +12,7 @@ const resolvers = {
             const user = authentication();
             const users = await db.collection('Users');
 
-            const regex = new RegExp(`${username}`);
-            const data = await users.find({ username: regex }).toArray();
+            const data = await users.find({ username: { $regex: `${username}`, $options: 'i' } }).toArray();
             return data;
         },
         GetUser: async (_, args, contextValue) => {
