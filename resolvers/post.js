@@ -124,6 +124,7 @@ const resolvers = {
                 $push: { comments: newComment }
             }); 
 
+            redis.del('post:all');
             return newComment;
         },
         LikePost: async (_, args, contextValue) => {
@@ -145,6 +146,7 @@ const resolvers = {
                 $push: { likes: newLike }
             }); 
 
+            redis.del('post:all');
             return newLike;
         }
     }
