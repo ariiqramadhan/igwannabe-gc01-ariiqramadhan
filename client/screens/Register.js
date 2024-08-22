@@ -43,6 +43,7 @@ export default function Register({ navigation }) {
                             <TextInput
                                 style={styles.input}
                                 placeholder="Password"
+                                secureTextEntry={true}
                             />
                         </View>
                         <LinearGradient
