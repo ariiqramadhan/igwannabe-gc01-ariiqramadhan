@@ -6,7 +6,7 @@ import Login from '../screens/Login';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { getItemAsync } from 'expo-secure-store';
-import Loading from '../screens/Loading';
+import Loading from '../components/Loading';
 
 const Stack = createNativeStackNavigator();
 
