@@ -103,6 +103,12 @@ const resolvers = {
                         }
                     });
                 }
+            } else {
+                throw new GraphQLError('Username must be filled', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                });
             }
 
             if (newUser.email) {
@@ -123,6 +129,12 @@ const resolvers = {
                     });
                 }
 
+            } else {
+                throw new GraphQLError('Email must be filled', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                });
             }
 
             if (newUser.password) {
@@ -134,6 +146,12 @@ const resolvers = {
                     });
                 }
                 newUser.password = hashPassword(newUser.password);
+            } else {
+                throw new GraphQLError('Password must be filled', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                });
             }
             const data = await users.insertOne(newUser);
             // return {
