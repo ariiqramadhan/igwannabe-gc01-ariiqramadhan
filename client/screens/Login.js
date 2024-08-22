@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: '#FFF',
         width: '100%',
-        borderTopLeftRadius: 80,
-        borderTopRightRadius: 80,
+        borderTopLeftRadius: 60,
+        borderTopRightRadius: 60,
     },
     headers: {
         alignItems: 'center',
