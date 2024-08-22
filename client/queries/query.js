@@ -10,3 +10,11 @@ export const REGISTER = gql`
         }
     }
 `
+
+export const LOGIN = gql`
+    mutation Login($username: String, $password: String) {
+        Login(username: $username, password: $password) {
+            access_token
+        }
+    }
+`

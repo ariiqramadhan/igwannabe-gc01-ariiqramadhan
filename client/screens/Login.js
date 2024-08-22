@@ -10,8 +10,35 @@ import {
 } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useContext, useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { LOGIN } from '../queries/query';
+import { AuthContext } from '../contexts/AuthContext';
+import { setItemAsync } from 'expo-secure-store';
 
 export default function Login({ navigation }) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [login, { error, data, loading }] = useMutation(LOGIN);
+    const { setIsSignedIn } = useContext(AuthContext);
+
+    async function handleLogin() {
+        try {
+            const res = await login({
+                variables: {
+                    username,
+                    password
+                }
+            });
+
+            const access_token = res.data.Login.access_token;
+            await setItemAsync('access_token', access_token);
+            setIsSignedIn(true);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <SafeAreaProvider>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -57,6 +84,9 @@ export default function Login({ navigation }) {
                                         <TextInput
                                             style={styles.input}
                                             placeholder="Username"
+                                            onChangeText={setUsername}
+                                            autoCapitalize='none'
+                                            autoCorrect={false}
                                         />
                                     </View>
                                     <View>
@@ -72,6 +102,9 @@ export default function Login({ navigation }) {
                                             style={styles.input}
                                             placeholder="Password"
                                             secureTextEntry={true}
+                                            onChangeText={setPassword}
+                                            autoCapitalize='none'
+                                            autoCorrect={false}
                                         />
                                     </View>
                                     <LinearGradient
@@ -86,9 +119,7 @@ export default function Login({ navigation }) {
                                         style={styles.signUp}
                                     >
                                         <Pressable
-                                            onPress={() =>
-                                                navigation.navigate('Login')
-                                            }
+                                            onPress={handleLogin}
                                         >
                                             <Text
                                                 style={{
