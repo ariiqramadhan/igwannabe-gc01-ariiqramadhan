@@ -18,3 +18,31 @@ export const LOGIN = gql`
         }
     }
 `
+
+export const GET_POSTS = gql`
+    query GetPosts {
+        GetPosts {
+            _id
+            content
+            tags
+            imageUrl
+            authorId
+            comments {
+            content
+            username
+            createdAt
+            updatedAt
+            }
+            likes {
+            username
+            createdAt
+            updatedAt
+            }
+            createdAt
+            updatedAt
+            author {
+            username
+            }
+        }
+    }
+`

@@ -1,13 +1,32 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
+import { deleteItemAsync } from 'expo-secure-store';
+import Post from '../components/Post';
+import { useQuery } from '@apollo/client';
+import { GET_POSTS } from '../queries/query';
 
 export default function Home() {
+    const { data, error, loading } = useQuery(GET_POSTS);
+    const { setIsSignedIn } = useContext(AuthContext);
+    async function handleLogout() {
+        try {
+            await deleteItemAsync('access_token');
+            setIsSignedIn(false);
+        } catch (err) {
+            console.log(err);
+        }
+    }
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.headers}>
-                    <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
+                    <Text
+                        style={{ fontSize: 24, fontWeight: 'bold' }}
+                        onPress={handleLogout}
+                    >
                         Instagram
                     </Text>
                     <View style={styles.headersLogo}>
@@ -15,8 +34,11 @@ export default function Home() {
                         <AntDesign name="message1" size={24} color="black" />
                     </View>
                 </View>
-                <View style={{flex: 20, justifyContent: 'flex-end'}}>
-                    <Text>Test</Text>
+
+                <View style={{ flex: 20 }}>
+                    <ScrollView contentContainerStyle={{ gap: 16 }}>
+                        {data.GetPosts?.map(post => <Post key={post._id} post={post}/>)}
+                    </ScrollView>
                 </View>
             </SafeAreaView>
         </SafeAreaProvider>
