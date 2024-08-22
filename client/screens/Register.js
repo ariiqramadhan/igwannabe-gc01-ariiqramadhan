@@ -1,4 +1,5 @@
 import {
+    ActivityIndicator,
     Keyboard,
     Pressable,
     StyleSheet,
@@ -10,8 +11,38 @@ import {
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { useMutation } from '@apollo/client';
+import { REGISTER } from '../queries/query';
+import { useState } from 'react';
 
-export default function Login({ navigation }) {
+export default function Register({ navigation }) {
+    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [register, { data, loading, error }] = useMutation(REGISTER);
+
+    async function handleRegister() {
+        try {
+            const newUser = {
+                email,
+                name,
+                password,
+                username,
+            };
+
+            await register({
+                variables: {
+                    newUser,
+                },
+            });
+
+            navigation.navigate('Login');
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <SafeAreaProvider>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -23,12 +54,13 @@ export default function Login({ navigation }) {
                     <View style={styles.container}>
                         <View style={styles.headers}>
                             <View style={styles.arrowSign}>
-                                <Pressable onPress={() => navigation.navigate('Login')}>
+                                <Pressable
+                                    onPress={() => navigation.navigate('Login')}
+                                >
                                     <FontAwesome6
                                         name="arrow-left-long"
                                         size={24}
                                         color="#FFF"
-                                        style={{}}
                                     />
                                 </Pressable>
                             </View>
@@ -65,6 +97,9 @@ export default function Login({ navigation }) {
                                         <TextInput
                                             style={styles.input}
                                             placeholder="Name"
+                                            onChangeText={setName}
+                                            autoCapitalize='none'
+                                            autoCorrect={false}
                                         />
                                     </View>
                                     <View>
@@ -79,6 +114,9 @@ export default function Login({ navigation }) {
                                         <TextInput
                                             style={styles.input}
                                             placeholder="Username"
+                                            onChangeText={setUsername}
+                                            autoCapitalize='none'
+                                            autoCorrect={false}
                                         />
                                     </View>
                                     <View>
@@ -93,6 +131,9 @@ export default function Login({ navigation }) {
                                         <TextInput
                                             style={styles.input}
                                             placeholder="Email"
+                                            onChangeText={setEmail}
+                                            autoCapitalize='none'
+                                            autoCorrect={false}
                                         />
                                     </View>
                                     <View>
@@ -108,35 +149,40 @@ export default function Login({ navigation }) {
                                             style={styles.input}
                                             placeholder="Password"
                                             secureTextEntry={true}
+                                            onChangeText={setPassword}
+                                            autoCapitalize='none'
+                                            autoCorrect={false}
                                         />
                                     </View>
-                                    <LinearGradient
-                                        colors={[
-                                            '#fba557',
-                                            '#e77546',
-                                            '#ce286b',
-                                            '#a71e9b',
-                                        ]}
-                                        start={[0, 1]}
-                                        end={[1, 0]}
-                                        style={styles.signUp}
-                                    >
-                                        <Pressable
-                                            onPress={() =>
-                                                navigation.navigate('Login')
-                                            }
+                                    {false ? (
+                                        <View style={styles.loading}>
+                                            <ActivityIndicator size={'large'} />
+                                        </View>
+                                    ) : (
+                                        <LinearGradient
+                                            colors={[
+                                                '#fba557',
+                                                '#e77546',
+                                                '#ce286b',
+                                                '#a71e9b',
+                                            ]}
+                                            start={[0, 1]}
+                                            end={[1, 0]}
+                                            style={styles.signUp}
                                         >
-                                            <Text
-                                                style={{
-                                                    textAlign: 'center',
-                                                    color: 'white',
-                                                    fontWeight: 'bold',
-                                                }}
-                                            >
-                                                Sign Up
-                                            </Text>
-                                        </Pressable>
-                                    </LinearGradient>
+                                            <Pressable onPress={handleRegister}>
+                                                <Text
+                                                    style={{
+                                                        textAlign: 'center',
+                                                        color: 'white',
+                                                        fontWeight: 'bold',
+                                                    }}
+                                                >
+                                                    Sign Up
+                                                </Text>
+                                            </Pressable>
+                                        </LinearGradient>
+                                    )}
                                 </View>
                             </View>
                             <View
@@ -232,5 +278,10 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'center',
         paddingHorizontal: 20,
+    },
+    loading: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 25,
     },
 });
