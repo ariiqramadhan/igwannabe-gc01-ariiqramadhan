@@ -1,5 +1,4 @@
 import {
-    Image,
     Keyboard,
     Pressable,
     StyleSheet,
@@ -10,77 +9,160 @@ import {
 } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
-export default function Register({ navigation }) {
+export default function Login({ navigation }) {
     return (
         <SafeAreaProvider>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <SafeAreaView style={styles.safeArea}>
+                    <LinearGradient
+                        colors={['#fba557', '#e77546', '#ce286b', '#a71e9b']}
+                        style={styles.background}
+                    />
                     <View style={styles.container}>
                         <View style={styles.headers}>
-                            <Image
-                                style={styles.logo}
-                                source={require('../assets/instagram.png')}
-                            />
-                            <Text style={{ fontSize: 40, fontWeight: 'bold' }}>
-                                Instagram
+                            <View style={styles.arrowSign}>
+                                <Pressable onPress={() => navigation.navigate('Login')}>
+                                    <FontAwesome6
+                                        name="arrow-left-long"
+                                        size={24}
+                                        color="#FFF"
+                                        style={{}}
+                                    />
+                                </Pressable>
+                            </View>
+                            <Text
+                                style={{
+                                    fontSize: 40,
+                                    fontWeight: 'bold',
+                                    color: '#FFF',
+                                    position: 'absolute',
+                                }}
+                            >
+                                Sign Up
                             </Text>
-                            <Text style={{ color: '#9D9D9D', marginTop: 6 }}>Discover New Connections!</Text>
                         </View>
                         <View style={styles.form}>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Name"
-                            />
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Username"
-                            />
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Email"
-                            />
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Password"
-                                secureTextEntry={true}
-                            />
-                        </View>
-                        <LinearGradient
-                            colors={[
-                                '#fba557',
-                                '#e77546',
-                                '#ce286b',
-                                '#a71e9b',
-                            ]}
-                            start={[0, 1]}
-                            end={[1, 0]}
-                            style={styles.signUp}
-                        >
-                            <Pressable
-                                onPress={() => navigation.navigate('Login')}
+                            <View
+                                style={{
+                                    flex: 3,
+                                    justifyContent: 'space-evenly',
+                                    alignItems: 'center',
+                                    marginTop: 30,
+                                }}
+                            >
+                                <View>
+                                    <View>
+                                        <Text
+                                            style={{
+                                                marginBottom: 5,
+                                                color: '#080814',
+                                            }}
+                                        >
+                                            Name
+                                        </Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            placeholder="Name"
+                                        />
+                                    </View>
+                                    <View>
+                                        <Text
+                                            style={{
+                                                marginBottom: 5,
+                                                color: '#080814',
+                                            }}
+                                        >
+                                            Username
+                                        </Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            placeholder="Username"
+                                        />
+                                    </View>
+                                    <View>
+                                        <Text
+                                            style={{
+                                                marginBottom: 5,
+                                                color: '#080814',
+                                            }}
+                                        >
+                                            Email
+                                        </Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            placeholder="Email"
+                                        />
+                                    </View>
+                                    <View>
+                                        <Text
+                                            style={{
+                                                marginBottom: 5,
+                                                color: '#080814',
+                                            }}
+                                        >
+                                            Password
+                                        </Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            placeholder="Password"
+                                            secureTextEntry={true}
+                                        />
+                                    </View>
+                                    <LinearGradient
+                                        colors={[
+                                            '#fba557',
+                                            '#e77546',
+                                            '#ce286b',
+                                            '#a71e9b',
+                                        ]}
+                                        start={[0, 1]}
+                                        end={[1, 0]}
+                                        style={styles.signUp}
+                                    >
+                                        <Pressable
+                                            onPress={() =>
+                                                navigation.navigate('Login')
+                                            }
+                                        >
+                                            <Text
+                                                style={{
+                                                    textAlign: 'center',
+                                                    color: 'white',
+                                                    fontWeight: 'bold',
+                                                }}
+                                            >
+                                                Sign Up
+                                            </Text>
+                                        </Pressable>
+                                    </LinearGradient>
+                                </View>
+                            </View>
+                            <View
+                                style={{ flex: 1, justifyContent: 'flex-end' }}
                             >
                                 <Text
                                     style={{
+                                        color: '#9D9D9D',
                                         textAlign: 'center',
-                                        color: 'white',
-                                        fontWeight: 'bold',
                                     }}
                                 >
-                                    Sign Up
+                                    Already have account?{' '}
+                                    <Text
+                                        style={{
+                                            textDecorationLine: 'underline',
+                                        }}
+                                        onPress={() =>
+                                            navigation.navigate('Login')
+                                        }
+                                    >
+                                        Sign In
+                                    </Text>
                                 </Text>
-                            </Pressable>
-                        </LinearGradient>
+                            </View>
+                        </View>
                     </View>
-                    <Text style={{ color: '#9D9D9D', textAlign: 'center' }}>
-                        Already have account?{' '}
-                        <Text
-                            style={{ textDecorationLine: 'underline' }}
-                            onPress={() => navigation.navigate('Login')}
-                        >
-                            Sign In
-                        </Text>
-                    </Text>
                 </SafeAreaView>
             </TouchableWithoutFeedback>
         </SafeAreaProvider>
@@ -90,6 +172,7 @@ export default function Register({ navigation }) {
 const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
+        backgroundColor: '#FFF',
     },
     container: {
         flex: 1,
@@ -97,7 +180,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     form: {
-        marginTop: 50,
+        flex: 6,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: '#FFF',
+        width: '100%',
+        borderTopLeftRadius: 60,
+        borderTopRightRadius: 60,
+    },
+    headers: {
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center',
+        width: '100%',
     },
     input: {
         shadowColor: '#000',
@@ -107,7 +202,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 4.65,
-
         elevation: 8,
         shadowColor: '#9D9D9D',
         width: 300,
@@ -123,11 +217,20 @@ const styles = StyleSheet.create({
         marginTop: 25,
     },
     logo: {
-        marginBottom: 30,
         width: 90,
         height: 90,
     },
-    headers: {
-        alignItems: 'center'
-    }
+    background: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height: '30%',
+    },
+    arrowSign: {
+        alignItems: 'flex-start',
+        width: '100%',
+        justifyContent: 'center',
+        paddingHorizontal: 20,
+    },
 });
