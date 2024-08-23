@@ -8,8 +8,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 export default function Post({ post }) {
     return (
         <View style={{ gap: 8 }}>
-            <View style={styles.post}>
-                <View style={styles.postHead}>
+            <View style={styles.postHead}>
+                <View style={styles.usernameLogo}>
                     <Image
                         source={require('../assets/blank-pp.jpg')}
                         style={{ width: 44, height: 44 }}
@@ -73,13 +73,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    post: {
+    postHead: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 8,
+        paddingHorizontal: 12,
     },
-    postHead: {
+    usernameLogo: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,

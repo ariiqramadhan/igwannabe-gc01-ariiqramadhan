@@ -37,7 +37,7 @@ export default function Home() {
 
                 <View style={{ flex: 20 }}>
                     <ScrollView contentContainerStyle={{ gap: 16 }}>
-                        {data.GetPosts?.map(post => <Post key={post._id} post={post}/>)}
+                        {data && data.GetPosts?.map(post => <Post key={post._id} post={post}/>)}
                     </ScrollView>
                 </View>
             </SafeAreaView>
@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 20,
+        paddingHorizontal: 12,
+        paddingVertical: 4,
     },
     headersLogo: {
         flexDirection: 'row',
