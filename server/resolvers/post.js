@@ -1,5 +1,6 @@
 const { ObjectId } = require("mongodb");
 const redis = require("../config/redisconnection");
+const { GraphQLError } = require("graphql");
 
 const resolvers = {
     Query: {
@@ -139,6 +140,17 @@ const resolvers = {
             }
 
             const posts = db.collection('Posts');
+
+            const findPost = await posts.findOne({_id: new ObjectId(postId)});
+
+            if (findPost.likes.some(val => val.username === username)) {
+                throw new GraphQLError('You already liked this post', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                });
+            }
+
             await posts.updateOne({
                 _id: new ObjectId(postId)
             },
