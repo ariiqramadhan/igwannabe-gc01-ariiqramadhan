@@ -1,26 +1,54 @@
 import Entypo from '@expo/vector-icons/Entypo';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Feather from '@expo/vector-icons/Feather';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import {
+    Image,
+    Pressable,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    View,
+} from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import ReadMore from 'react-native-read-more-text';
+import { useMutation } from '@apollo/client';
+import { GET_POSTS, LIKE_POST } from '../queries/query';
 
 export default function Post({ post }) {
+    const [like, { error, loading, data }] = useMutation(LIKE_POST, {
+        refetchQueries: [GET_POSTS],
+    });
     function renderTruncatedFooter(handlePress) {
         return (
-            <Text style={{ color: '#9D9D9D', marginTop: 5 }} onPress={handlePress}>
-                Read more
-            </Text>
+            <Pressable onPress={handlePress}>
+                <Text
+                    style={{ color: '#9D9D9D', marginTop: 5 }}
+                >
+                    Read more
+                </Text>
+            </Pressable>
         );
     }
 
     function renderRevealedFooter(handlePress) {
         return (
-            <Text style={{ color: '#9D9D9D', marginTop: 5 }} onPress={handlePress}>
-                Show less
-            </Text>
+            <Pressable onPress={handlePress}>
+                <Text
+                    style={{ color: '#9D9D9D', marginTop: 5 }}
+                >
+                    Show less
+                </Text>
+            </Pressable>
         );
+    }
+
+    async function handleLike() {
+        await like({
+            variables: {
+                postId: post._id,
+            },
+        });
     }
 
     return (
@@ -57,7 +85,16 @@ export default function Post({ post }) {
             <View style={styles.postFoot}>
                 <View style={{ flexDirection: 'row', gap: 8 }}>
                     <View style={styles.footLogo}>
-                        <AntDesign name="hearto" size={26} color="#080814" />
+                        <TouchableHighlight
+                            onPress={handleLike}
+                            underlayColor="none"
+                        >
+                            <AntDesign
+                                name="hearto"
+                                size={26}
+                                color="#080814"
+                            />
+                        </TouchableHighlight>
                         <Text style={{ fontSize: 16, color: '#080814' }}>
                             {post.likes.length}
                         </Text>
@@ -81,7 +118,7 @@ export default function Post({ post }) {
                 </View>
                 <FontAwesome name="bookmark-o" size={24} color="#080814" />
             </View>
-            <View style={{width: '100%', paddingHorizontal: 8}}>
+            <View style={{ width: '100%', paddingHorizontal: 8 }}>
                 <ReadMore
                     numberOfLines={1}
                     renderTruncatedFooter={renderTruncatedFooter}
@@ -94,8 +131,8 @@ export default function Post({ post }) {
                         </Text>
                     </Text>
                     <Text>{'\n\n'}</Text>
-                    <Text style={{color: '#4092EF'}}>
-                        {post.tags?.map(tag => `#${tag} `)}
+                    <Text style={{ color: '#4092EF' }}>
+                        {post.tags?.map((tag) => `#${tag} `)}
                     </Text>
                 </ReadMore>
             </View>
