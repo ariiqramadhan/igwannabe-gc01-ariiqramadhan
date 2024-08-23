@@ -15,16 +15,14 @@ import ReadMore from 'react-native-read-more-text';
 import { useMutation } from '@apollo/client';
 import { GET_POSTS, LIKE_POST } from '../queries/query';
 
-export default function Post({ post }) {
+export default function Post({ post, navigation }) {
     const [like, { error, loading, data }] = useMutation(LIKE_POST, {
         refetchQueries: [GET_POSTS],
     });
     function renderTruncatedFooter(handlePress) {
         return (
             <Pressable onPress={handlePress}>
-                <Text
-                    style={{ color: '#9D9D9D', marginTop: 5 }}
-                >
+                <Text style={{ color: '#9D9D9D', marginTop: 5 }}>
                     Read more
                 </Text>
             </Pressable>
@@ -34,9 +32,7 @@ export default function Post({ post }) {
     function renderRevealedFooter(handlePress) {
         return (
             <Pressable onPress={handlePress}>
-                <Text
-                    style={{ color: '#9D9D9D', marginTop: 5 }}
-                >
+                <Text style={{ color: '#9D9D9D', marginTop: 5 }}>
                     Show less
                 </Text>
             </Pressable>
@@ -77,10 +73,12 @@ export default function Post({ post }) {
                 </View>
             </View>
             <View>
-                <Image
-                    src={post.imageUrl}
-                    style={{ width: '100%', height: 400 }}
-                />
+                <Pressable onPress={() => navigation.navigate('Post Detail', {post})}>
+                    <Image
+                        src={post.imageUrl}
+                        style={{ width: '100%', height: 400 }}
+                    />
+                </Pressable>
             </View>
             <View style={styles.postFoot}>
                 <View style={{ flexDirection: 'row', gap: 8 }}>
@@ -124,9 +122,9 @@ export default function Post({ post }) {
                     renderTruncatedFooter={renderTruncatedFooter}
                     renderRevealedFooter={renderRevealedFooter}
                 >
-                    <Text style={{ fontWeight: '600', textAlign: 'justify' }}>
+                    <Text style={{ fontWeight: '600', textAlign: 'justify', color: '#080814' }}>
                         {post.author.username}{' '}
-                        <Text style={{ fontWeight: 'normal' }}>
+                        <Text style={{ fontWeight: 'normal', color: '#080814' }}>
                             {post.content}
                         </Text>
                     </Text>

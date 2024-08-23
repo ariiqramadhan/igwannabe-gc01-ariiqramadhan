@@ -9,7 +9,7 @@ import { useQuery } from '@apollo/client';
 import { GET_POSTS } from '../queries/query';
 import Loading from '../components/Loading';
 
-export default function Home() {
+export default function Home({ navigation }) {
     const { data, error, loading } = useQuery(GET_POSTS);
     const { setIsSignedIn } = useContext(AuthContext);
     async function handleLogout() {
@@ -47,7 +47,7 @@ export default function Home() {
                     </ScrollView> */}
                     <FlatList 
                         data={data?.GetPosts}
-                        renderItem={({item}) => <Post post={item}/>}
+                        renderItem={({item}) => <Post post={item} navigation={navigation}/>}
                     />
                 </View>
             </SafeAreaView>
