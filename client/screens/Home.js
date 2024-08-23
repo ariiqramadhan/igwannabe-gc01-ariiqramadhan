@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useContext } from 'react';
@@ -7,6 +7,7 @@ import { deleteItemAsync } from 'expo-secure-store';
 import Post from '../components/Post';
 import { useQuery } from '@apollo/client';
 import { GET_POSTS } from '../queries/query';
+import Loading from '../components/Loading';
 
 export default function Home() {
     const { data, error, loading } = useQuery(GET_POSTS);
@@ -19,26 +20,35 @@ export default function Home() {
             console.log(err);
         }
     }
+
+    if (!data) {
+        return <Loading />
+    }
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.headers}>
                     <Text
-                        style={{ fontSize: 24, fontWeight: 'bold' }}
+                        style={{ fontSize: 24, fontWeight: 'bold', color: '#080814' }}
                         onPress={handleLogout}
                     >
                         Instagram
                     </Text>
                     <View style={styles.headersLogo}>
-                        <AntDesign name="hearto" size={24} color="black" />
-                        <AntDesign name="message1" size={24} color="black" />
+                        <AntDesign name="hearto" size={24} color="#080814" />
+                        <AntDesign name="message1" size={24} color="#080814" />
                     </View>
                 </View>
 
                 <View style={{ flex: 20 }}>
-                    <ScrollView contentContainerStyle={{ gap: 16 }}>
+                    {/* <ScrollView contentContainerStyle={{ gap: 16 }}>
                         {data && data.GetPosts?.map(post => <Post key={post._id} post={post}/>)}
-                    </ScrollView>
+                    </ScrollView> */}
+                    <FlatList 
+                        data={data?.GetPosts}
+                        renderItem={({item}) => <Post post={item}/>}
+                    />
                 </View>
             </SafeAreaView>
         </SafeAreaProvider>
