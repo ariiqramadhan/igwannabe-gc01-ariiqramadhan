@@ -56,3 +56,42 @@ export const LIKE_POST = gql`
         }
     }
 `
+
+export const GET_POST = gql`
+    query GetPost($getPostId: ID) {
+        GetPost(id: $getPostId) {
+            _id
+            content
+            tags
+            imageUrl
+            authorId
+            comments {
+            content
+            username
+            createdAt
+            updatedAt
+            }
+            likes {
+            username
+            createdAt
+            updatedAt
+            }
+            createdAt
+            updatedAt
+            author {
+            username
+            }
+        }
+    }
+`
+
+export const COMMENT_POST = gql`
+    mutation Comment($newComment: NewComment, $postId: ID) {
+        CommentPost(newComment: $newComment, postId: $postId) {
+            content
+            username
+            createdAt
+            updatedAt
+        }
+    }
+`

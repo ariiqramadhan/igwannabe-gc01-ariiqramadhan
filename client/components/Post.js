@@ -40,11 +40,15 @@ export default function Post({ post, navigation }) {
     }
 
     async function handleLike() {
-        await like({
-            variables: {
-                postId: post._id,
-            },
-        });
+        try {
+            await like({
+                variables: {
+                    postId: post._id,
+                },
+            });
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     return (
@@ -73,7 +77,7 @@ export default function Post({ post, navigation }) {
                 </View>
             </View>
             <View>
-                <Pressable onPress={() => navigation.navigate('Post Detail', {post})}>
+                <Pressable onPress={() => navigation.navigate('Post Detail', {id: post._id})}>
                     <Image
                         src={post.imageUrl}
                         style={{ width: '100%', height: 400 }}
