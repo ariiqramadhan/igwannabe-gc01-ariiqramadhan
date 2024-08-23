@@ -77,7 +77,11 @@ export default function Post({ post, navigation }) {
                 </View>
             </View>
             <View>
-                <Pressable onPress={() => navigation.navigate('PostDetail', {id: post._id})}>
+                <Pressable
+                    onPress={() =>
+                        navigation.navigate('PostDetail', { id: post._id })
+                    }
+                >
                     <Image
                         src={post.imageUrl}
                         style={{ width: '100%', height: 400 }}
@@ -101,16 +105,22 @@ export default function Post({ post, navigation }) {
                             {post.likes.length}
                         </Text>
                     </View>
-                    <View style={styles.footLogo}>
-                        <MaterialCommunityIcons
-                            name="comment-outline"
-                            size={26}
-                            color="#080814"
-                        />
-                        <Text style={{ fontSize: 16, color: '#080814' }}>
-                            {post.comments.length}
-                        </Text>
-                    </View>
+                    <Pressable
+                        onPress={() =>
+                            navigation.navigate('PostDetail', { id: post._id })
+                        }
+                    >
+                        <View style={styles.footLogo}>
+                            <MaterialCommunityIcons
+                                name="comment-outline"
+                                size={26}
+                                color="#080814"
+                            />
+                            <Text style={{ fontSize: 16, color: '#080814' }}>
+                                {post.comments.length}
+                            </Text>
+                        </View>
+                    </Pressable>
                     <View style={styles.footLogo}>
                         <Feather name="send" size={26} color="#080814" />
                         <Text style={{ fontSize: 16, color: '#080814' }}>
@@ -126,9 +136,17 @@ export default function Post({ post, navigation }) {
                     renderTruncatedFooter={renderTruncatedFooter}
                     renderRevealedFooter={renderRevealedFooter}
                 >
-                    <Text style={{ fontWeight: '600', textAlign: 'justify', color: '#080814' }}>
+                    <Text
+                        style={{
+                            fontWeight: '600',
+                            textAlign: 'justify',
+                            color: '#080814',
+                        }}
+                    >
                         {post.author.username}{' '}
-                        <Text style={{ fontWeight: 'normal', color: '#080814' }}>
+                        <Text
+                            style={{ fontWeight: 'normal', color: '#080814' }}
+                        >
                             {post.content}
                         </Text>
                     </Text>
