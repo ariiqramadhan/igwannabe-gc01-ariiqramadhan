@@ -77,7 +77,7 @@ export default function Post({ post, navigation }) {
                 </View>
             </View>
             <View>
-                <Pressable onPress={() => navigation.navigate('Post Detail', {id: post._id})}>
+                <Pressable onPress={() => navigation.navigate('PostDetail', {id: post._id})}>
                     <Image
                         src={post.imageUrl}
                         style={{ width: '100%', height: 400 }}

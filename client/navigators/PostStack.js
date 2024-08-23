@@ -8,7 +8,7 @@ export default function PostStack() {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
-            <Stack.Screen name="Post Detail" component={PostDetail}/>
+            <Stack.Screen name="PostDetail" component={PostDetail} options={{headerTitle: 'Post Detail', headerBackTitleVisible: false, headerTintColor: '#080814'}}/>
         </Stack.Navigator>
     )
 }
