@@ -214,6 +214,7 @@ export default function PostDetail() {
                                         paddingHorizontal: 8,
                                         paddingTop: 20,
                                         paddingBottom: 80,
+                                        width: '100%'
                                     }}
                                 >
                                     <ScrollView>
