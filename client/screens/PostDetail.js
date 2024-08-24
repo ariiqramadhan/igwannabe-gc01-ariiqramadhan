@@ -83,7 +83,13 @@ export default function PostDetail({ navigation }) {
                         backgroundColor: '#FFF',
                     }}
                 >
-                    <Pressable onPress={() => navigation.navigate('UserDetail', {id: data.GetPost.authorId})}>
+                    <Pressable
+                        onPress={() =>
+                            navigation.navigate('UserDetail', {
+                                id: data.GetPost.authorId,
+                            })
+                        }
+                    >
                         <View style={styles.postHead}>
                             <View style={styles.usernameLogo}>
                                 <Image
@@ -254,12 +260,7 @@ export default function PostDetail({ navigation }) {
                                                                             color: black,
                                                                         }}
                                                                     >
-                                                                        {
-                                                                            data
-                                                                                ?.GetPost
-                                                                                .author
-                                                                                .username
-                                                                        }
+                                                                        {val.username}
                                                                     </Text>
                                                                     <Text
                                                                         style={{
@@ -332,11 +333,13 @@ export default function PostDetail({ navigation }) {
                                                     value={userComment}
                                                 />
                                             </View>
-                                            <Ionicons
-                                                name="send"
-                                                size={24}
-                                                color={black}
-                                            />
+                                            <Pressable onPress={handleComment}>
+                                                <Ionicons
+                                                    name="send"
+                                                    size={24}
+                                                    color={black}
+                                                />
+                                            </Pressable>
                                         </View>
                                     </View>
                                 </View>
