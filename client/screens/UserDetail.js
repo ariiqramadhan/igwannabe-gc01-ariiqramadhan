@@ -116,6 +116,7 @@ export default function UserDetail({ navigation }) {
                         <TouchableHighlight
                             style={styles.buttonFollow}
                             onPress={handleFollow}
+                            underlayColor={'#0075C2'}
                         >
                             <Text style={{ color: '#FFF' }}>Follow</Text>
                         </TouchableHighlight>
@@ -284,11 +285,15 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 16,
         borderRadius: 6,
+        width: 100,
+        alignItems: 'center'
     },
     buttonMessage: {
         backgroundColor: '#EFEFEF',
         paddingVertical: 8,
         paddingHorizontal: 16,
         borderRadius: 6,
+        width: 100,
+        alignItems: 'center'
     },
 });
