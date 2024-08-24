@@ -23,7 +23,7 @@ export default function Post({ post, navigation }) {
         return (
             <Pressable onPress={handlePress}>
                 <Text style={{ color: '#9D9D9D', marginTop: 5 }}>
-                    Read more
+                    Show more
                 </Text>
             </Pressable>
         );
