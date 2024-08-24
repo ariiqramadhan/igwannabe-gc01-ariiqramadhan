@@ -26,7 +26,7 @@ import { useEffect, useState } from 'react';
 
 const black = '#080814';
 
-export default function PostDetail() {
+export default function PostDetail({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [userComment, setUserComment] = useState('');
     const route = useRoute();
@@ -83,29 +83,33 @@ export default function PostDetail() {
                         backgroundColor: '#FFF',
                     }}
                 >
-                    <View style={styles.postHead}>
-                        <View style={styles.usernameLogo}>
-                            <Image
-                                source={require('../assets/blank-pp.jpg')}
-                                style={{ width: 44, height: 44 }}
-                            />
-                            <Text style={{ fontWeight: '600', color: black }}>
-                                {data?.GetPost.author.username}
-                            </Text>
+                    <Pressable onPress={() => navigation.navigate('UserDetail', {id: data.GetPost.authorId})}>
+                        <View style={styles.postHead}>
+                            <View style={styles.usernameLogo}>
+                                <Image
+                                    source={require('../assets/blank-pp.jpg')}
+                                    style={{ width: 44, height: 44 }}
+                                />
+                                <Text
+                                    style={{ fontWeight: '600', color: black }}
+                                >
+                                    {data?.GetPost.author.username}
+                                </Text>
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Entypo
+                                    name="dots-three-horizontal"
+                                    size={20}
+                                    color={black}
+                                />
+                            </View>
                         </View>
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Entypo
-                                name="dots-three-horizontal"
-                                size={20}
-                                color={black}
-                            />
-                        </View>
-                    </View>
+                    </Pressable>
                     <View>
                         <Image
                             src={data?.GetPost.imageUrl}
@@ -214,11 +218,11 @@ export default function PostDetail() {
                                         paddingHorizontal: 8,
                                         paddingTop: 20,
                                         paddingBottom: 80,
-                                        width: '100%'
+                                        width: '100%',
                                     }}
                                 >
                                     <ScrollView>
-                                        <View style={{flex: 1}}>
+                                        <View style={{ flex: 1 }}>
                                             {data?.GetPost.comments.map(
                                                 (val, i) => {
                                                     return (

@@ -53,29 +53,31 @@ export default function Post({ post, navigation }) {
 
     return (
         <View style={{ gap: 8, marginBottom: 12 }}>
-            <View style={styles.postHead}>
-                <View style={styles.usernameLogo}>
-                    <Image
-                        source={require('../assets/blank-pp.jpg')}
-                        style={{ width: 44, height: 44 }}
-                    />
-                    <Text style={{ fontWeight: '600', color: '#080814' }}>
-                        {post.author.username}
-                    </Text>
+            <Pressable onPress={() => navigation.navigate('UserDetail', {id: post.authorId})}>
+                <View style={styles.postHead}>
+                    <View style={styles.usernameLogo}>
+                        <Image
+                            source={require('../assets/blank-pp.jpg')}
+                            style={{ width: 44, height: 44 }}
+                        />
+                        <Text style={{ fontWeight: '600', color: '#080814' }}>
+                            {post.author.username}
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Entypo
+                            name="dots-three-horizontal"
+                            size={20}
+                            color="#080814"
+                        />
+                    </View>
                 </View>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Entypo
-                        name="dots-three-horizontal"
-                        size={20}
-                        color="#080814"
-                    />
-                </View>
-            </View>
+            </Pressable>
             <View>
                 <Pressable
                     onPress={() =>

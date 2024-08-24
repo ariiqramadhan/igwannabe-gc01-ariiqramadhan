@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const REGISTER = gql`
     mutation Register($newUser: NewUser) {
@@ -9,7 +9,7 @@ export const REGISTER = gql`
             email
         }
     }
-`
+`;
 
 export const LOGIN = gql`
     mutation Login($username: String, $password: String) {
@@ -17,7 +17,7 @@ export const LOGIN = gql`
             access_token
         }
     }
-`
+`;
 
 export const GET_POSTS = gql`
     query GetPosts {
@@ -28,24 +28,24 @@ export const GET_POSTS = gql`
             imageUrl
             authorId
             comments {
-            content
-            username
-            createdAt
-            updatedAt
+                content
+                username
+                createdAt
+                updatedAt
             }
             likes {
-            username
-            createdAt
-            updatedAt
+                username
+                createdAt
+                updatedAt
             }
             createdAt
             updatedAt
             author {
-            username
+                username
             }
         }
     }
-`
+`;
 
 export const LIKE_POST = gql`
     mutation LikePost($postId: ID) {
@@ -55,7 +55,7 @@ export const LIKE_POST = gql`
             updatedAt
         }
     }
-`
+`;
 
 export const GET_POST = gql`
     query GetPost($getPostId: ID) {
@@ -66,30 +66,63 @@ export const GET_POST = gql`
             imageUrl
             authorId
             comments {
-            content
-            username
-            createdAt
-            updatedAt
+                content
+                username
+                createdAt
+                updatedAt
             }
             likes {
-            username
-            createdAt
-            updatedAt
+                username
+                createdAt
+                updatedAt
             }
             createdAt
             updatedAt
             author {
-            username
+                username
             }
         }
     }
-`
+`;
 
 export const COMMENT_POST = gql`
     mutation Comment($newComment: NewComment, $postId: ID) {
         CommentPost(newComment: $newComment, postId: $postId) {
             content
             username
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
+export const GET_USER = gql`
+    query GetUser($getUserId: ID) {
+        GetUser(id: $getUserId) {
+            _id
+            name
+            username
+            email
+            following {
+                _id
+                name
+                username
+            }
+            followers {
+                _id
+                name
+                username
+            }
+        }
+    }
+`;
+
+export const FOLLOW_USER = gql`
+    mutation FollowUser($newFollow: NewFollow) {
+        FollowUser(newFollow: $newFollow) {
+            _id
+            followingId
+            followerId
             createdAt
             updatedAt
         }
