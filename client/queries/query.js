@@ -128,3 +128,14 @@ export const FOLLOW_USER = gql`
         }
     }
 `
+
+export const SEARCH_USERS = gql`
+    query Search($username: String) {
+        SearchUsers(username: $username) {
+            _id
+            name
+            username
+            email
+        }
+    }
+`
