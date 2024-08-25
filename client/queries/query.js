@@ -139,3 +139,28 @@ export const SEARCH_USERS = gql`
         }
     }
 `
+
+export const ADD_POST = gql`
+    mutation AddPost($newPost: NewPost) {
+        AddPost(newPost: $newPost) {
+            _id
+            content
+            tags
+            imageUrl
+            authorId
+            comments {
+            content
+            username
+            createdAt
+            updatedAt
+            }
+            likes {
+            username
+            createdAt
+            updatedAt
+            }
+            createdAt
+            updatedAt
+        }
+    }
+`

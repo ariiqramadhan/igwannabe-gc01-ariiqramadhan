@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from '../screens/Home';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import PostDetail from '../screens/PostDetail';
 import PostStack from './PostStack';
 import Explore from '../screens/Explore';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import AddPost from '../screens/AddPost';
+import Octicons from '@expo/vector-icons/Octicons';
 
 const Tab = createBottomTabNavigator();
 
@@ -36,9 +36,41 @@ export default function TabStack() {
                     headerShown: false,
                     tabBarIcon: ({ color, size, focused }) =>
                         focused ? (
-                            <FontAwesome name="search" size={24} color="#080814" />
+                            <FontAwesome
+                                name="search"
+                                size={24}
+                                color="#080814"
+                            />
                         ) : (
-                            <FontAwesome name="search" size={24} color="#080814" style={{opacity: 0.8}} />
+                            <FontAwesome
+                                name="search"
+                                size={24}
+                                color="#080814"
+                                style={{ opacity: 0.8 }}
+                            />
+                        ),
+                    tabBarShowLabel: false,
+                }}
+            />
+            <Tab.Screen
+                name="AddPost"
+                component={AddPost}
+                options={{
+                    headerTitle: 'New Post',
+                    tabBarIcon: ({ color, size, focused }) =>
+                        focused ? (
+                            <Octicons
+                                name="diff-added"
+                                size={24}
+                                color="#080814"
+                            />
+                        ) : (
+                            <Octicons
+                                name="diff-added"
+                                size={24}
+                                color="#080814"
+                                style={{ opacity: 0.8 }}
+                            />
                         ),
                     tabBarShowLabel: false,
                 }}
