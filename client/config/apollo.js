@@ -3,7 +3,7 @@ import { setContext } from '@apollo/client/link/context';
 import { getItemAsync } from 'expo-secure-store';
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:4000',
+    uri: 'https://ig-wannabe-server.nobuenoo.site',
 });
 
 const authLink = setContext(async (_, { headers }) => {
