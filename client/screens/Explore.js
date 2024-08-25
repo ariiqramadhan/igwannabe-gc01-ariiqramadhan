@@ -26,6 +26,24 @@ export default function Explore({ navigation }) {
     const { data, error, loading } = useQuery(GET_POSTS);
     const [getUsers, { data: usersData, error: usersError, loading: usersLoading }] = useLazyQuery(SEARCH_USERS);
 
+    function debounce(func, text, timeout = 300){
+        let timer;
+        return (...args) => {
+          clearTimeout(timer);
+          timer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
+    }
+
+    async function saveInput(text){
+        await getUsers({
+            variables: {
+                username: text
+            }
+        });
+    }
+
+    const processChange = debounce((text) => saveInput(text));
+
     function showSearch() {
         setShowCancel(true);
         setSearchSection(true);
@@ -85,15 +103,13 @@ export default function Explore({ navigation }) {
                                 color="#9D9D9D"
                             />
                             <TextInput
-                                style={{ fontSize: 18, flex: 1, color: black }}
+                                style={{ fontSize: 18, flex: 1, color: black, height: 'auto' }}
                                 placeholder="Search"
                                 placeholderTextColor={'#9D9D9D'}
                                 autoCapitalize={false}
                                 autoCorrect={false}
                                 onPress={showSearch}
-                                onChangeText={setSearchInput}
-                                onSubmitEditing={handleSearch}
-                                value={searchInput}
+                                onChangeText={(text) => processChange(text)}
                             />
                         </View>
                         {showCancel ? (

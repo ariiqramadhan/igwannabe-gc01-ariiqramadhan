@@ -12,6 +12,7 @@ import { FOLLOW_USER, GET_USER } from '../queries/query';
 import { useRoute } from '@react-navigation/native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Feather from '@expo/vector-icons/Feather';
+import Toast from 'react-native-root-toast';
 
 const black = '#080814';
 
@@ -38,6 +39,14 @@ export default function UserDetail({ navigation }) {
                 },
             });
         } catch (err) {
+            let toast = Toast.show(err.graphQLErrors[0].message, {
+                duration: 1500,
+                hideOnPress: true,
+                position: Toast.positions.TOP,
+                backgroundColor: '#E53835',
+                textColor: '#FFF',
+                opacity: 1
+            });
             console.log(err);
         }
     }

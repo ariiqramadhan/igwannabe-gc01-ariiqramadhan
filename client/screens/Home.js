@@ -1,6 +1,7 @@
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { deleteItemAsync } from 'expo-secure-store';
@@ -31,13 +32,14 @@ export default function Home({ navigation }) {
                 <View style={styles.headers}>
                     <Text
                         style={{ fontSize: 24, fontWeight: 'bold', color: '#080814' }}
-                        onPress={handleLogout}
                     >
                         Instagram
                     </Text>
                     <View style={styles.headersLogo}>
                         <AntDesign name="hearto" size={24} color="#080814" />
-                        <AntDesign name="message1" size={24} color="#080814" />
+                        <Pressable onPress={handleLogout}>
+                            <MaterialIcons name="logout" size={24} color="#E53835" />
+                        </Pressable>
                     </View>
                 </View>
 
