@@ -99,6 +99,14 @@ const resolvers = {
             const user = await authentication();
             const { id } = user;
 
+            if (!newPost.content) {
+                throw new GraphQLError('Caption required!', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                });
+            }
+
             newPost.authorId = new ObjectId(id);
             newPost.comments = [];
             newPost.likes = [];
