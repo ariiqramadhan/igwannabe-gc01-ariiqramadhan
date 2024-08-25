@@ -122,6 +122,14 @@ const resolvers = {
             const { newComment, postId } = args;
             const { username } = await authentication();
 
+            if (!newComment.content) {
+                throw new GraphQLError('Comments required!', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                    }
+                });
+            }
+
             newComment.username = username;
             newComment.updatedAt = newComment.createdAt = new Date();
 
