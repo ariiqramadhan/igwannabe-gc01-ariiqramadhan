@@ -6,11 +6,15 @@ const { ObjectId } = require('mongodb');
 const resolvers = {
     Query: {
         SearchUsers: async (_, args, contextValue) => {
-            const { username } = args;
+            let { username } = args;
             const { authentication, db } = contextValue;
 
             const user = authentication();
             const users = await db.collection('Users');
+
+            if (!username) {
+                username = null;
+            }
 
             const data = await users.find({ username: { $regex: `${username}`, $options: 'i' } }).toArray();
             return data;
