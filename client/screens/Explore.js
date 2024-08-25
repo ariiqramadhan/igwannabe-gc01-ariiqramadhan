@@ -15,6 +15,7 @@ import ExplorePost from '../components/ExplorePost';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_POSTS, SEARCH_USERS } from '../queries/query';
 import UsersSearch from '../components/UsersSearch';
+import Toast from 'react-native-root-toast';
 
 const black = '#080814';
 
@@ -54,6 +55,14 @@ export default function Explore({ navigation }) {
                 }
             })
         } catch (err) {
+            let toast = Toast.show(err.graphQLErrors[0].message, {
+                duration: 1500,
+                hideOnPress: true,
+                position: Toast.positions.TOP,
+                backgroundColor: '#E53835',
+                textColor: '#FFF',
+                opacity: 1
+            });
             console.log(err);
         }
     }

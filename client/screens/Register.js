@@ -14,6 +14,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useMutation } from '@apollo/client';
 import { REGISTER } from '../queries/query';
 import { useState } from 'react';
+import Toast from 'react-native-root-toast';
 
 export default function Register({ navigation }) {
     const [name, setName] = useState('');
@@ -39,6 +40,14 @@ export default function Register({ navigation }) {
 
             navigation.navigate('Login');
         } catch (err) {
+            let toast = Toast.show(err.graphQLErrors[0].message, {
+                duration: 1500,
+                hideOnPress: true,
+                position: Toast.positions.TOP,
+                backgroundColor: '#E53835',
+                textColor: '#FFF',
+                opacity: 1
+            });
             console.log(err);
         }
     }

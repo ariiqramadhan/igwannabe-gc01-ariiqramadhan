@@ -15,6 +15,7 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from '../queries/query';
 import { AuthContext } from '../contexts/AuthContext';
 import { setItemAsync } from 'expo-secure-store';
+import Toast from 'react-native-root-toast';
 
 export default function Login({ navigation }) {
     const [username, setUsername] = useState('');
@@ -35,6 +36,14 @@ export default function Login({ navigation }) {
             await setItemAsync('access_token', access_token);
             setIsSignedIn(true);
         } catch (err) {
+            let toast = Toast.show(err.graphQLErrors[0].message, {
+                duration: 1500,
+                hideOnPress: true,
+                position: Toast.positions.TOP,
+                backgroundColor: '#E53835',
+                textColor: '#FFF',
+                opacity: 1
+            });
             console.log(err);
         }
     }

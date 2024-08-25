@@ -9,6 +9,7 @@ import Tags from '../components/Tags';
 import { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_POST, GET_POSTS } from '../queries/query';
+import Toast from 'react-native-root-toast';
 
 const black = '#080814';
 
@@ -53,6 +54,14 @@ export default function AddPost({ navigation }) {
             });
             navigation.navigate('MainHome');
         } catch (err) {
+            let toast = Toast.show(err.graphQLErrors[0].message, {
+                duration: 1500,
+                hideOnPress: true,
+                position: Toast.positions.TOP,
+                backgroundColor: '#E53835',
+                textColor: '#FFF',
+                opacity: 1
+            });
             console.log(err);
         }
     } 

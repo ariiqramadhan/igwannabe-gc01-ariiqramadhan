@@ -23,6 +23,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { COMMENT_POST, GET_POST, LIKE_POST } from '../queries/query';
 import { useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
+import Toast from 'react-native-root-toast';
 
 const black = '#080814';
 
@@ -56,6 +57,14 @@ export default function PostDetail({ navigation }) {
             });
             setUserComment('');
         } catch (err) {
+            let toast = Toast.show(err.graphQLErrors[0].message, {
+                duration: 1500,
+                hideOnPress: true,
+                position: Toast.positions.TOP,
+                backgroundColor: '#E53835',
+                textColor: '#FFF',
+                opacity: 1
+            });
             console.log(err);
         }
     }

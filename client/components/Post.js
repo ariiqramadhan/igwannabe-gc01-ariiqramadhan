@@ -14,6 +14,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import ReadMore from 'react-native-read-more-text';
 import { useMutation } from '@apollo/client';
 import { GET_POSTS, LIKE_POST } from '../queries/query';
+import Toast from 'react-native-root-toast';
 
 export default function Post({ post, navigation }) {
     const [like, { error, loading, data }] = useMutation(LIKE_POST, {
@@ -47,6 +48,14 @@ export default function Post({ post, navigation }) {
                 },
             });
         } catch (err) {
+            let toast = Toast.show(err.graphQLErrors[0].message, {
+                duration: 1500,
+                hideOnPress: true,
+                position: Toast.positions.TOP,
+                backgroundColor: '#E53835',
+                textColor: '#FFF',
+                opacity: 1
+            });
             console.log(err);
         }
     }
